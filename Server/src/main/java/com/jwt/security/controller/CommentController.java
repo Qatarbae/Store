@@ -20,13 +20,13 @@ import java.util.List;
 @Tag(name = "comment")
 public class CommentController {
 
-    private CommentService commentService;
+    private final CommentService commentService;
     @PostMapping("/add_comment")
     public ResponseEntity<CommentResponse> addComment(
             @AuthenticationPrincipal User user,
             @RequestBody CommentRequest commentRequest
     ){
-
+        System.out.println(user.getEmail());
         return ResponseEntity.ok(commentService.addComment(commentRequest,user));
     }
 

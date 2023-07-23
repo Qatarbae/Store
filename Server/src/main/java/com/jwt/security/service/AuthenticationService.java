@@ -38,8 +38,11 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
         try {
             Role role = null;
-            if(request.getRole().equals("ADMIN") || request.getRole().equals("MANAGER")){
+            if(request.getRole() != null  && (request.getRole().equals("ADMIN") || request.getRole().equals("MANAGER"))){
                 role = Role.valueOf(request.getRole());
+            }
+            else {
+                role = Role.USER;
             }
             var user = User.builder()
                     .firstname(request.getFirstName())
@@ -63,6 +66,7 @@ public class AuthenticationService {
             throw new YourCustomException("Пользователь с таким именем уже существует.");
         } catch (Exception e) {
             // Обработка других ошибок при сохранении пользователя
+            System.out.println(e.getMessage());
             throw new YourCustomException("Не удалось сохранить пользователя.");
         }
 
