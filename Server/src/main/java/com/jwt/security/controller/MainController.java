@@ -2,17 +2,13 @@ package com.jwt.security.controller;
 
 
 
-import com.jwt.security.Entity.course.Course;
-import com.jwt.security.Entity.user.User;
 import com.jwt.security.demo.Arr;
-import com.jwt.security.exception.YourCustomException;
+import com.jwt.security.exception.CustomException;
 import com.jwt.security.requestResponse.CourseResponse;
-import com.jwt.security.requestResponse.NewCourseResponse;
 import com.jwt.security.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -53,7 +49,7 @@ public class MainController {
         String path = "/api/v1/management";
         // Проверка пути контроллера
         if (!isValidPath(path)) {
-            throw new YourCustomException("Неправильный путь контроллера");
+            throw new CustomException("Неправильный путь контроллера");
         }
         return "GET:: management controller";
     }

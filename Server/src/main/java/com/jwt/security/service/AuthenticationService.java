@@ -6,9 +6,9 @@ import com.jwt.security.Entity.token.TokenRepository;
 import com.jwt.security.Entity.token.TokenType;
 import com.jwt.security.Entity.user.Role;
 import com.jwt.security.Entity.user.User;
-import com.jwt.security.Entity.user.repository.UserRepository;
+import com.jwt.security.repository.UserRepository;
 import com.jwt.security.config.RateLimited;
-import com.jwt.security.exception.YourCustomException;
+import com.jwt.security.exception.CustomException;
 import com.jwt.security.requestResponse.AuthenticationRequest;
 import com.jwt.security.requestResponse.AuthenticationResponse;
 import com.jwt.security.requestResponse.RegisterRequest;
@@ -63,11 +63,11 @@ public class AuthenticationService {
                     .build();
         } catch (DataIntegrityViolationException e) {
             // Обработка ошибки, когда пользователь с таким же именем уже существует
-            throw new YourCustomException("Пользователь с таким именем уже существует.");
+            throw new CustomException("Пользователь с таким именем уже существует.");
         } catch (Exception e) {
             // Обработка других ошибок при сохранении пользователя
             System.out.println(e.getMessage());
-            throw new YourCustomException("Не удалось сохранить пользователя.");
+            throw new CustomException("Не удалось сохранить пользователя.");
         }
 
     }

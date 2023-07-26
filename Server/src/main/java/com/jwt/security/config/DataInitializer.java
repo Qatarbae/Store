@@ -1,9 +1,8 @@
 package com.jwt.security.config;
 
 import com.jwt.security.Entity.course.Categories;
-import com.jwt.security.Entity.course.repository.CategoriesRepository;
-import com.jwt.security.Entity.user.Role;
-import com.jwt.security.Entity.user.repository.UserRepository;
+import com.jwt.security.repository.CategoriesRepository;
+import com.jwt.security.repository.UserRepository;
 import com.jwt.security.requestResponse.RegisterRequest;
 import com.jwt.security.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;

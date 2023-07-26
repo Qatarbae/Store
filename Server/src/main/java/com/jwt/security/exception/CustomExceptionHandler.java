@@ -14,8 +14,8 @@ import java.util.Map;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(YourCustomException.class)
-    public ResponseEntity<String> handleYourCustomException(YourCustomException ex) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<String> handleYourCustomException(CustomException ex) {
         // Создайте свою собственную логику для предупреждения об ошибке
         String errorMessage = "Произошла ошибка: " + ex.getMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);

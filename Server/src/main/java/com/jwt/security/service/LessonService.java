@@ -3,10 +3,10 @@ package com.jwt.security.service;
 import com.jwt.security.Entity.course.Course;
 import com.jwt.security.Entity.course.Lesson;
 import com.jwt.security.Entity.course.Modules;
-import com.jwt.security.Entity.course.repository.LessonRepository;
-import com.jwt.security.Entity.course.repository.ModulesRepository;
+import com.jwt.security.repository.LessonRepository;
+import com.jwt.security.repository.ModulesRepository;
 import com.jwt.security.Entity.user.User;
-import com.jwt.security.exception.YourCustomException;
+import com.jwt.security.exception.CustomException;
 import com.jwt.security.requestResponse.AddLessonRequest;
 import com.jwt.security.requestResponse.LessonRequest;
 import com.jwt.security.requestResponse.LessonResponse;
@@ -28,7 +28,7 @@ public class LessonService {
         List<LessonRequest> lessonRequests = request.getLessons();
         List<LessonResponse> ListModulesResponses = new ArrayList<>();
         Modules modules = modulesRepository.findById(moduleId)
-                .orElseThrow(() -> new YourCustomException("Module not found"));
+                .orElseThrow(() -> new CustomException("Module not found"));
         int i = 0;
         for (LessonRequest lessonRequest : lessonRequests) {
             Lesson lesson = new Lesson();

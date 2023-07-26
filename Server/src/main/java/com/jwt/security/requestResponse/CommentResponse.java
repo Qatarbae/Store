@@ -15,5 +15,7 @@ public class CommentResponse {
     private Long userId;
     private String userName;
     private String text;
+    private String date;
+    private String timeZone;
     private Long lessonId;
 }

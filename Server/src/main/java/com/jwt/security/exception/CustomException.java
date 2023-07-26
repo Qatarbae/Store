@@ -1,8 +1,8 @@
 package com.jwt.security.exception;
 
-public class YourCustomException extends RuntimeException {
+public class CustomException extends RuntimeException {
 
-    public YourCustomException(String message) {
+    public CustomException(String message) {
         super(message);
     }
 

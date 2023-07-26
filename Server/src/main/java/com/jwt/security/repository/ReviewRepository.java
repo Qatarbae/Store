@@ -1,4 +1,4 @@
-package com.jwt.security.Entity.text.repository;
+package com.jwt.security.repository;
 
 import com.jwt.security.Entity.text.Review;
 import org.springframework.data.jpa.repository.JpaRepository;

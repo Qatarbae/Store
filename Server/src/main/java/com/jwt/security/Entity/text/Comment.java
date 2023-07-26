@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,6 +24,8 @@ public class Comment {
     private Long id;
 
     private String text;
+
+    private Timestamp date;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

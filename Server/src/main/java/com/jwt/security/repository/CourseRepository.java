@@ -1,4 +1,4 @@
-package com.jwt.security.Entity.course.repository;
+package com.jwt.security.repository;
 
 import com.jwt.security.Entity.course.Course;
 import com.jwt.security.Entity.user.CourseCreator;

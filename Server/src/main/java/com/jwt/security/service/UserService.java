@@ -3,16 +3,14 @@ package com.jwt.security.service;
 
 import com.jwt.security.Entity.user.CourseCreator;
 import com.jwt.security.Entity.user.User;
-import com.jwt.security.Entity.user.repository.CourseCreatorRepository;
-import com.jwt.security.Entity.user.repository.UserRepository;
-import com.jwt.security.exception.YourCustomException;
+import com.jwt.security.repository.CourseCreatorRepository;
+import com.jwt.security.repository.UserRepository;
+import com.jwt.security.exception.CustomException;
 import com.jwt.security.requestResponse.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,7 +57,7 @@ public class UserService {
             }
             return existingUser.get();
         } catch (DataIntegrityViolationException e) {
-            throw  new YourCustomException("You are the creator");
+            throw  new CustomException("You are the creator");
         }
     }
 

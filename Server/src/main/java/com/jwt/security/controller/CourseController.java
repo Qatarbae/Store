@@ -3,8 +3,8 @@ package com.jwt.security.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jwt.security.Entity.course.Course;
 import com.jwt.security.Entity.user.User;
+import com.jwt.security.exception.CustomException;
 import com.jwt.security.requestResponse.*;
 import com.jwt.security.service.CourseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,49 +25,44 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
-
-
     @PostMapping("/add_course")
     public ResponseEntity<CourseRequest> addCourse(
             @AuthenticationPrincipal User user,
             @RequestParam("request") String jsonRequest,
             @RequestParam("image") MultipartFile image,
             @RequestParam("video") MultipartFile video
-){
+    ) {
         CourseRequest request;
         try {
-            request  = new ObjectMapper().readValue(jsonRequest, CourseRequest.class);
+            request = new ObjectMapper().readValue(jsonRequest, CourseRequest.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-        return ResponseEntity.ok(courseService.addCourse(request, image,video,user));
+        return ResponseEntity.ok(courseService.addCourse(request, image, video, user));
     }
 
     @PostMapping("/new_course")
     public ResponseEntity<NewCourseResponse> newCourse(
             @AuthenticationPrincipal User user,
             @RequestBody String jsonRequest
-    ){
-        System.out.println(jsonRequest);
+    ) {
         try {
-            return ResponseEntity.ok(courseService.newCourse(jsonRequest,user));
+            return ResponseEntity.ok(courseService.newCourse(jsonRequest, user));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new CustomException("course not created");
         }
     }
 
     @GetMapping("/creator_courses")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<CourseResponse>> allCourseCreator(
-            @AuthenticationPrincipal User user
-    ){
+            @AuthenticationPrincipal User user) {
 
         return courseService.allCourseCreator(user);
     }
 
     @GetMapping("/categories")
-    public ResponseEntity<List<CategoriesResponse>> getCategories(){
+    public ResponseEntity<List<CategoriesResponse>> getCategories() {
 
         return ResponseEntity.ok(courseService.getCategories());
     }
@@ -75,7 +70,6 @@ public class CourseController {
 
     @PostMapping("/save_course")
     public ResponseEntity<FullCourseResponse> saveCourse(@RequestBody FullCourseRequest course) {
-        // Вызов сервисного метода для сохранения курса
         FullCourseResponse fullCourseResponse = courseService.fullCourse(course);
         if (fullCourseResponse != null) {
             return ResponseEntity.ok(fullCourseResponse);
@@ -90,18 +84,17 @@ public class CourseController {
             @AuthenticationPrincipal User user,
             @RequestParam Long id
     ) {
-        //Long id = Long.parseLong(idRequest);
         return ResponseEntity.ok(courseService.getFullCourse(id));
     }
 
     @GetMapping("/search_courses")
     public ResponseEntity<SearchCourseResponse> searchCourses(@ModelAttribute SearchCourseRequest request) {
-        String title = request.getTitle();
-        boolean hasCertificate = request.isHasCertificate();
-        boolean isFree = request.isFree();
-        int maxDistance = request.getMaxDistance();
-
-        List<CourseResponse> courses = courseService.searchCourses(title, hasCertificate, isFree, maxDistance);
+        List<CourseResponse> courses = courseService.searchCourses(
+                request.getTitle(),
+                request.isHasCertificate(),
+                request.isFree(),
+                request.getMaxDistance()
+        );
 
         HttpStatus status = courses.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
         SearchCourseResponse response = new SearchCourseResponse(status, courses);
