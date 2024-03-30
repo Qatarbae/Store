@@ -12,9 +12,13 @@ import com.jwt.security.exception.CustomException;
 import com.jwt.security.requestResponse.AuthenticationRequest;
 import com.jwt.security.requestResponse.AuthenticationResponse;
 import com.jwt.security.requestResponse.RegisterRequest;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +27,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +41,8 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
+    @Value("${application.security.jwt.secret-key}")
+    private String secretKey;
 
     public AuthenticationResponse register(RegisterRequest request) {
         try {
@@ -142,5 +151,47 @@ public class AuthenticationService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+
+    public String updatePasswordToken(String login, String updatePasswordRequestId){
+        return jwtService.updatePasswordToken(login ,updatePasswordRequestId);
+    }
+    public String updatePassword(String token){
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            String login = claims.getBody().get("login", String.class);
+            String updatePasswordRequestId = claims.getBody().get("updatePasswordRequestId", String.class);
+            Optional<User> optionalUserser = repository.findByEmail(login);
+            if(optionalUserser.isEmpty()){
+                return "пользователя нет";
+            }
+            else{
+                User user = optionalUserser.get();
+                user.setPassword(passwordEncoder.encode("1111"));
+                repository.save(user);
+                return "Пароль успешно обновлен для пользователя с ID: " + login;
+            }
+        } catch (Exception ex) {
+            return "Неверный токен или истек срок его действия.";
+        }
+    }
+
+    // Вместо ConcurrentMap здесь вы можете использовать базу данных для хранения связи между updatePasswordRequestId и пользователем
+    private final ConcurrentMap<String, String> updatePasswordRequests = new ConcurrentHashMap<>();
+
+    // Метод для инициирования запроса на обновление пароля
+    public String initPasswordResetRequest(String login) {
+        // Генерация уникального идентификатора для запроса на обновление пароля
+        String updatePasswordRequestId = UUID.randomUUID().toString();
+
+        // Сохранение связи между updatePasswordRequestId и userId (или другой информацией, которая может быть полезной при обработке запроса)
+        updatePasswordRequests.put(updatePasswordRequestId, login);
+
+        return updatePasswordRequestId;
+    }
+
+    // Метод для получения информации о пользователе по updatePasswordRequestId
+    public String getUserIdByUpdatePasswordRequestId(String updatePasswordRequestId) {
+        return updatePasswordRequests.get(updatePasswordRequestId);
     }
 }

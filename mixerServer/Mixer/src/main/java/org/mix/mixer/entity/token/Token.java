@@ -1,4 +1,4 @@
-package org.mix.mixer.model.token;
+package org.mix.mixer.entity.token;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mix.mixer.model.appuser.User;
+import org.mix.mixer.entity.appuser.User;
 
 @Data
 @Builder

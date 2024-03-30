@@ -1,4 +1,4 @@
-package org.mix.mixer.model.appuser;
+package org.mix.mixer.entity.appuser;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.mix.mixer.model.appuser.Permission.*;
+import static org.mix.mixer.entity.appuser.Permission.*;
 
 @RequiredArgsConstructor
 public enum UserRole {

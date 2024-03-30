@@ -1,6 +1,6 @@
 package org.mix.mixer.auditing;
 
-import org.mix.mixer.model.appuser.User;
+import org.mix.mixer.entity.appuser.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

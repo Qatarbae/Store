@@ -6,62 +6,55 @@ import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.mix.mixer.controller.auth.AuthenticationRequest;
-import org.mix.mixer.controller.auth.AuthenticationResponse;
-import org.mix.mixer.controller.auth.RegisterRequest;
-import org.mix.mixer.model.appuser.User;
-import org.mix.mixer.model.token.Token;
-import org.mix.mixer.model.token.TokenType;
+import org.mix.mixer.convert.userconvert.UserConvert;
+import org.mix.mixer.entity.appuser.User;
+import org.mix.mixer.entity.token.Token;
+import org.mix.mixer.entity.token.TokenType;
+import org.mix.mixer.exception.userexception.UserAuthException;
+import org.mix.mixer.model.auth.AuthViewModel;
+import org.mix.mixer.model.auth.RegisterViewModel;
 import org.mix.mixer.repository.token.TokenRepository;
 import org.mix.mixer.repository.userrepository.UserRepository;
 import org.mix.mixer.service.jwtservice.JwtService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserConvert<User, RegisterViewModel> userConvert;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
-                .build();
-        var savedUser = repository.save(user);
+    public AuthViewModel register(RegisterViewModel model) throws UserAuthException {
+        var user = userConvert.toConvert(model);
+        var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-        return AuthenticationResponse.builder()
+        return AuthViewModel.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthViewModel authenticate(String email, String password) throws UserAuthException {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
+                        email,
+                        password
                 )
         );
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+        var user = userRepository.findByEmail(email).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
-        return AuthenticationResponse.builder()
+        return AuthViewModel.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -96,19 +89,19 @@ public class AuthenticationService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
         if (userEmail != null) {
-            var user = this.repository.findByEmail(userEmail)
+            var user = this.userRepository.findByEmail(userEmail)
                     .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
-                var authResponse = AuthenticationResponse.builder()
+                var authResponse = AuthViewModel.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
                         .build();

@@ -1,4 +1,4 @@
-package org.mix.mixer.model.appuser;
+package org.mix.mixer.model.usermodel;
 
 
 import lombok.Builder;

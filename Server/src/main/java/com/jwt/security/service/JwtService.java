@@ -75,6 +75,23 @@ public class JwtService {
                 .compact();
     }
 
+    public String updatePasswordToken(String login, String updatePasswordRequestId) {
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + 3600000); // Токен будет действителен в течение 1 часа (время указано в миллисекундах)
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("login", login);
+        claims.put("updatePasswordRequestId", updatePasswordRequestId);
+
+        return Jwts
+                .builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationDate.getTime()))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token) && !isTokenRevoked(token);

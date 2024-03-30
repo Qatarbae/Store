@@ -1,4 +1,4 @@
-package org.mix.mixer.controller.auth;
+package org.mix.mixer.model.auth;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
+public class AuthViewModel {
 
     @JsonProperty("access_token")
     private String accessToken;

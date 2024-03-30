@@ -1,4 +1,4 @@
-package org.mix.mixer.model.token;
+package org.mix.mixer.entity.token;
 
 public enum TokenType {
     BEARER

@@ -1,14 +1,12 @@
-package org.mix.mixer.model.appuser;
+package org.mix.mixer.entity.appuser;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.mix.mixer.model.token.Token;
+import org.mix.mixer.entity.token.Token;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -16,22 +14,28 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "users")
 public class User implements UserDetails {
 
 
     @Id
     @GeneratedValue
+    @Column(name = "id")
     private Integer id;
-    private String firstname;
-    private String lastname;
+    @Column(name = "email", unique = true)
     private String email;
+    @Column(name = "firstname")
+    private String firstname;
+    @Column(name = "lastname")
+    private String lastname;
+    @Column(name = "password")
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private UserRole role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens;
 
     @Override

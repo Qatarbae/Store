@@ -3,7 +3,7 @@ package org.mix.mixer.repository.token;
 import java.util.List;
 import java.util.Optional;
 
-import org.mix.mixer.model.token.Token;
+import org.mix.mixer.entity.token.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

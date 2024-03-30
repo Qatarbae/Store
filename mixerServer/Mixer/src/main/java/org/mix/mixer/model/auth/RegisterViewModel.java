@@ -1,16 +1,16 @@
-package org.mix.mixer.controller.auth;
+package org.mix.mixer.model.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mix.mixer.model.appuser.UserRole;
+import org.mix.mixer.entity.appuser.UserRole;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class RegisterViewModel {
 
     private String firstname;
     private String lastname;

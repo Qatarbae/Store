@@ -46,7 +46,7 @@ public class SecurityConfiguration {
                         "/swagger-ui.html"
                 )
                 .permitAll()
-                .requestMatchers("/auth/register", "/auth/authenticate").permitAll()
+                .requestMatchers("/auth/register", "/auth/authenticate", "/auth/up","/auth/updatePasswordам").permitAll()
                 .requestMatchers("/main/courses", "/course/categories").permitAll()
                 .requestMatchers("/api/demo").permitAll()
                 .requestMatchers("/img/**").permitAll()

@@ -1,4 +1,4 @@
-package org.mix.mixer.model.appuser;
+package org.mix.mixer.entity.appuser;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
