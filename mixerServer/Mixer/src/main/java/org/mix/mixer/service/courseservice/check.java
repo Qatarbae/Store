@@ -4,7 +4,7 @@
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import io.micrometer.common.util.StringUtils;
 //import lombok.RequiredArgsConstructor;
-//import org.mix.mixer.convert.courseconvert.CourseConvert;
+//import org.mix.mixer.course.convert.CourseConvert;
 //import org.mix.mixer.entity.appuser.User;
 //import org.mix.mixer.entity.course.Categories;
 //import org.mix.mixer.course.entity.Course;

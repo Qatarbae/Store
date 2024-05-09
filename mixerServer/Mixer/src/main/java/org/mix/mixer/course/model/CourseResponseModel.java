@@ -1,6 +1,6 @@
 package org.mix.mixer.course.model;
 
-public record CourseResponse(
+public record CourseResponseModel(
         Long id,
         String title,
         Integer memberCount,
