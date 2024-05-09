@@ -1,0 +1,7 @@
+package org.mix.mixer.repository.courserepository;
+
+import org.mix.mixer.entity.course.CourseCreator;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CourseCreatorRepository extends JpaRepository<CourseCreator, Long> {
+}

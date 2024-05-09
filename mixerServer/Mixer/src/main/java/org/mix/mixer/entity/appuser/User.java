@@ -1,7 +1,10 @@
 package org.mix.mixer.entity.appuser;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.*;
+import org.mix.mixer.course.entity.Course;
+import org.mix.mixer.entity.course.CourseCreator;
 import org.mix.mixer.entity.token.Token;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,26 +17,44 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "_user",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements UserDetails {
-
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "email", unique = true)
-    private String email;
-    @Column(name = "firstname")
+    @EqualsAndHashCode.Include
+    private  Long id;
+
     private String firstname;
-    @Column(name = "lastname")
+
     private String lastname;
-    @Column(name = "password")
+
+    @Nonnull
+    @Column(name = "email", unique = true)
+    @EqualsAndHashCode.Include
+    private String email;
+
+
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
     private UserRole role;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_courses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Profile profiles;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private CourseCreator courseCreator;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens;

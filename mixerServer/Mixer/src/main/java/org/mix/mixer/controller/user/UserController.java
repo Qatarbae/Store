@@ -1,7 +1,6 @@
 package org.mix.mixer.controller.user;
 
 import lombok.RequiredArgsConstructor;
-import org.mix.mixer.exception.userexception.UserException;
 import org.mix.mixer.model.usermodel.ChangePasswordRequest;
 import org.mix.mixer.model.usermodel.UserViewModel;
 import org.mix.mixer.service.userservice.UserService;
@@ -13,7 +12,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -21,61 +20,35 @@ public class UserController {
 
     @PatchMapping("/password")
     public ResponseEntity<?> changePassword(
-            @RequestParam ChangePasswordRequest request,
+            @RequestBody ChangePasswordRequest request,
             Principal connectedUser
     ) {
-        try {
-            service.changePassword(request, connectedUser);
-            return ResponseEntity.ok().body("Вы сменили пароль");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("произошла ошибка");
-        }
-
+        service.changePassword(request, connectedUser);
+        return ResponseEntity.ok().body("Вы сменили пароль");
     }
 
     @GetMapping("/")
-    public ResponseEntity<Object> getUsers(
+    public ResponseEntity<?> getUser(
             @RequestParam(name = "username") String username
-    ){
-        try {
-             return ResponseEntity.ok().body(service.getUser(username));
-        } catch (UserException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    ) {
+        return ResponseEntity.ok().body(service.getUser(username));
     }
+
     @GetMapping("/{count}/before")
-    @ResponseBody
-    public ResponseEntity<Object> getUsers(
+    public ResponseEntity<?> getUsersBefore(
             @PathVariable("count") int count
-    ){
-        try {
-            List<UserViewModel> users = service.getUsersBefore(count);
-            return ResponseEntity.ok().body(users);
-        } catch (UserException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    ) {
+        List<UserViewModel> users = service.getUsersBefore(count);
+        return ResponseEntity.ok().body(users);
     }
 
     @DeleteMapping("/")
     @Transactional
-    public ResponseEntity<Object> deleteUser(
+    public ResponseEntity<?> deleteUser(
             @RequestParam(name = "password") String password,
             Principal connectedUser
-    ){
-        try {
-            service.deleteUser(password, connectedUser);
-            return ResponseEntity.ok().build();
-        } catch (UserException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    ) {
+        service.deleteUser(password, connectedUser);
+        return ResponseEntity.ok().build();
     }
 }
