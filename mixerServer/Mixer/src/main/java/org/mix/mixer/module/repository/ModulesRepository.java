@@ -1,6 +1,6 @@
-package org.mix.mixer.repository.courserepository;
+package org.mix.mixer.module.repository;
 
-import org.mix.mixer.entity.course.Modules;
+import org.mix.mixer.module.entity.Modules;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

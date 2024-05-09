@@ -11,7 +11,7 @@
 //import org.mix.mixer.model.course.coursemodel.CourseCreateModel;
 //import org.mix.mixer.repository.courserepository.CategoriesRepository;
 //import org.mix.mixer.course.repository.CourseRepository;
-//import org.mix.mixer.repository.courserepository.ModulesRepository;
+//import org.mix.mixer.module.repository.ModulesRepository;
 //import org.springframework.dao.DataIntegrityViolationException;
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;

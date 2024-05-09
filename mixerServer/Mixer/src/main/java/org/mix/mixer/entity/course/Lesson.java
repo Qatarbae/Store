@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mix.mixer.entity.comment.CommentLesson;
+import org.mix.mixer.module.entity.Modules;
 
 import java.util.List;
 

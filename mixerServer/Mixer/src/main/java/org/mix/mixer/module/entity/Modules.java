@@ -1,4 +1,4 @@
-package org.mix.mixer.entity.course;
+package org.mix.mixer.module.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mix.mixer.course.entity.Course;
+import org.mix.mixer.entity.course.Lesson;
 
 import java.util.List;
 

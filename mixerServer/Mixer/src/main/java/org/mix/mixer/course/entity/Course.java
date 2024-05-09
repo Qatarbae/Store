@@ -9,7 +9,7 @@ import org.mix.mixer.entity.appuser.User;
 import org.mix.mixer.entity.course.Categories;
 import org.mix.mixer.entity.course.CourseCreator;
 import org.mix.mixer.entity.course.CourseDescription;
-import org.mix.mixer.entity.course.Modules;
+import org.mix.mixer.module.entity.Modules;
 
 import java.util.List;
 
