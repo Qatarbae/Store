@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mix.mixer.entity.appuser.User;
-import org.mix.mixer.entity.course.Lesson;
+import org.mix.mixer.lesson.entity.Lesson;
 
 import java.sql.Timestamp;
 

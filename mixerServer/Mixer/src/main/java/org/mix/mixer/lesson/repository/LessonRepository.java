@@ -1,6 +1,6 @@
-package org.mix.mixer.repository.courserepository;
+package org.mix.mixer.lesson.repository;
 
-import org.mix.mixer.entity.course.Lesson;
+import org.mix.mixer.lesson.entity.Lesson;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +24,5 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
             @Param("creatorId") Long creatorId
     );
 
+    void deleteAllByModulesId(Long modulesId);
 }

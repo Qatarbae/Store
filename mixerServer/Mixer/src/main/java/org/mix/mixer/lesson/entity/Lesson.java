@@ -1,4 +1,4 @@
-package org.mix.mixer.entity.course;
+package org.mix.mixer.lesson.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
