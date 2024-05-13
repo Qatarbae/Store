@@ -33,7 +33,10 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations
 	implementation ("io.swagger.core.v3:swagger-annotations:2.2.20")
+// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
 
+	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 }
 
 tasks.test {

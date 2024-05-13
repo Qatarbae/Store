@@ -17,23 +17,17 @@ import java.util.List;
 @Entity
 @Table(name = "modules")
 public class Modules {
-
     @Id
     @GeneratedValue
     private Long id;
-
     @JoinColumn(name = "module_number")
     private Double moduleNumber;
-
     private String title;
     private String description;
-
     private Integer code;
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
-
     @OneToMany(mappedBy = "modules", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lesson> lessons;
-
 }
